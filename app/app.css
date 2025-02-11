@@ -1,25 +1,23 @@
-/* Uncomment to enable TailwindCSS */
-
-/* @import "tailwindcss";
+@import "tailwindcss"; /* Ensure this imports correctly */
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, 
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 html,
 body {
-  @apply bg-white;
+  @apply bg-white text-black; /* Apply Tailwind's background and text color */
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif, 
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   @media (prefers-color-scheme: dark) {
     color-scheme: light;
+    @apply bg-black text-white; /* Dark mode styling */
   }
 
   @media (prefers-color-scheme: light) {
     color-scheme: dark;
+    @apply bg-white text-black; /* Light mode styling */
   }
-} */
-
-body {
-  font-family: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
