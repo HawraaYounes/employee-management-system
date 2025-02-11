@@ -17,11 +17,13 @@ CREATE TABLE employees (
     document_upload TEXT NULL    -- File path for CV, ID, etc.
 );
 
--- Create timesheets table
+-- Create timesheets table with all required and bonus fields
 CREATE TABLE timesheets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
     employee_id INTEGER NOT NULL,
-    FOREIGN KEY (employee_id) REFERENCES employees(id)
+    summary TEXT NULL,  -- Summary of work done (bonus field)
+    FOREIGN KEY (employee_id) REFERENCES employees(id),
+    CHECK (start_time < end_time) -- Ensuring start time is before end time
 );
