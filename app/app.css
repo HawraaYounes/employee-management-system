@@ -1,14 +1,15 @@
-@import "tailwindcss"; /* Ensure this imports correctly */
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap'); /* Import Poppins Font */
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, 
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif, 
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 html,
 body {
   @apply bg-white text-black; /* Apply Tailwind's background and text color */
-  font-family: "Inter", ui-sans-serif, system-ui, sans-serif, 
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif, 
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   @media (prefers-color-scheme: dark) {
