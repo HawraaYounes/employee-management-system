@@ -14,11 +14,13 @@ export const action: ActionFunction = async ({ request }) => {
   const department = formData.get("department") as string;
   const salary = formData.get("salary") as string;
   const start_date = formData.get("start_date") as string;
+  const employee_photo = formData.get("employee_photo") as File;
+  const document_upload = formData.get("document_upload") as File;
 
   const db = await getDB();
   await db.run(
-    'INSERT INTO employees (full_name, email, phone_number, date_of_birth, job_title, department, salary, start_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-    [full_name, email, phone_number, date_of_birth, job_title, department, salary, start_date]
+    'INSERT INTO employees (full_name, email, phone_number, date_of_birth, job_title, department, salary, start_date, employee_photo, document_upload) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [full_name, email, phone_number, date_of_birth, job_title, department, salary, start_date, employee_photo?.name, document_upload?.name]
   );
 
   return redirect("/employees");
@@ -36,19 +38,33 @@ export default function NewEmployeePage() {
     start_date: "",
   });
 
+  const [employeePhoto, setEmployeePhoto] = useState<File | null>(null);
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.length) {
+      const file = e.target.files[0];
+      if (e.target.name === "employee_photo") {
+        setEmployeePhoto(file);
+      } else if (e.target.name === "document_upload") {
+        setDocumentFile(file);
+      }
+    }
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-semibold mb-6 text-black text-center">Create New Employee</h1>
-      <Form method="post" className="space-y-4">
+      <Form method="post" className="space-y-4" encType="multipart/form-data">
         <InputField label="Full Name" name="full_name" value={formValues.full_name} onChange={handleChange} />
         <InputField label="Email" type="email" name="email" value={formValues.email} onChange={handleChange} />
         <InputField label="Phone Number" type="tel" name="phone_number" value={formValues.phone_number} onChange={handleChange} />
         <InputField label="Date of Birth" type="date" name="date_of_birth" value={formValues.date_of_birth} onChange={handleChange} />
-        
+
         <SelectField 
           label="Job Title" 
           name="job_title" 
@@ -75,6 +91,19 @@ export default function NewEmployeePage() {
 
         <InputField label="Salary" type="number" name="salary" value={formValues.salary} onChange={handleChange} />
         <InputField label="Start Date" type="date" name="start_date" value={formValues.start_date} onChange={handleChange} />
+
+        {/* File Uploads */}
+        <div className="mb-4">
+          <label className="block font-medium text-gray-700">Profile Photo</label>
+          <input type="file" name="employee_photo" accept="image/*" onChange={handleFileChange} className="mt-1 block w-full" />
+          {employeePhoto && <p className="text-sm text-gray-500">Selected: {employeePhoto.name}</p>}
+        </div>
+
+        <div className="mb-4">
+          <label className="block font-medium text-gray-700">Upload Document</label>
+          <input type="file" name="document_upload" accept=".pdf,.doc,.docx" onChange={handleFileChange} className="mt-1 block w-full" />
+          {documentFile && <p className="text-sm text-gray-500">Selected: {documentFile.name}</p>}
+        </div>
 
         <div className="flex justify-center">
           <button
